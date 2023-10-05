@@ -1,7 +1,7 @@
 using Xunit;
 
 public class ProgramTest {
-    
+
     // Ækvivalensklasse: Gyldige værdier (SetPricePerUnit metoden)
     [Fact]
     public void Test_SetPricePerUnit_ValidPrice()
@@ -21,6 +21,18 @@ public class ProgramTest {
         var converter = new Converter();
         Assert.Throws<ArgumentException>(() => converter.SetPricePerUnit("litecoin", price));
     }
+    
+    // Ækvivalensklasse: Ugyldige værdier (Tom eller null valutanavn i SetPricePerUnit)
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("   ")] 
+    public void Test_SetPricePerUnit_InvalidCurrencyName_ThrowsException(string currencyName)
+    {
+        var converter = new Converter();
+        Assert.Throws<ArgumentException>(() => converter.SetPricePerUnit(currencyName, 100));
+    }
+
 
     // Ækvivalensklasse: Gyldige værdier (Convert metoden)
     [Fact]

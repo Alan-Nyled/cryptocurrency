@@ -2,12 +2,16 @@
 
     private Dictionary<string, double> _cryptoPrices = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
     
-        public static void Main(string[] args) {
-        // Bare et eksempel til konsollen
+    public static void Main(string[] args) {
         Converter converter = new();
+
         // Indtast navn og pris for første valuta
         Console.WriteLine("Indtast navn på fra kryptovaluta:");
         string? firstCurrencyName = Console.ReadLine();
+        while (string.IsNullOrWhiteSpace(firstCurrencyName)) {
+            Console.WriteLine("Indtast et gyldigt navn på kryptovaluta:");
+            firstCurrencyName = Console.ReadLine();
+        }
 
         Console.WriteLine($"Indtast prisen på en enhed af {firstCurrencyName} i USD:");
         double firstCurrencyPrice;
@@ -19,6 +23,10 @@
         // Indtast navn og pris for anden valuta
         Console.WriteLine("\nIndtast navn på til kryptovaluta:");
         string? secondCurrencyName = Console.ReadLine();
+        while (string.IsNullOrWhiteSpace(secondCurrencyName)) {
+            Console.WriteLine("Indtast et gyldigt navn på kryptovaluta:");
+            secondCurrencyName = Console.ReadLine();
+        }
 
         Console.WriteLine($"Indtast prisen på en enhed af {secondCurrencyName} i USD:");
         double secondCurrencyPrice;
@@ -32,6 +40,7 @@
         Console.WriteLine($"\n1 {firstCurrencyName} er lig med {result} {secondCurrencyName}.");
     }
 
+
     /// <summary>
     /// Angiver prisen for en enhed af en kryptovaluta. Prisen angives i dollars.
     /// Hvis der tidligere er angivet en værdi for samme kryptovaluta, 
@@ -40,11 +49,17 @@
     /// <param name="currencyName">Navnet på den kryptovaluta der angives</param>
     /// <param name="price">Prisen på en enhed af valutaen målt i dollars. Prisen kan ikke være negativ</param>
     public void SetPricePerUnit(String currencyName, double price) {
-        if (price <= 0) {
-                    throw new ArgumentException("Prisen kan ikke være 0 eller negativ.");
-                }
-                _cryptoPrices[currencyName] = price;
+    if (string.IsNullOrWhiteSpace(currencyName)) {
+        throw new ArgumentException("Valutanavnet kan ikke være tomt eller kun bestå af mellemrum.");
     }
+    
+    if (price <= 0) {
+        throw new ArgumentException("Prisen kan ikke være 0 eller negativ.");
+    }
+    
+    _cryptoPrices[currencyName] = price;
+}
+
 
     /// <summary>
     /// Konverterer fra en kryptovaluta til en anden. 
